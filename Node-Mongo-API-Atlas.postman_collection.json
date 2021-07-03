@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "e6cb4b69-a569-4a74-9f1c-784b04d16069",
+		"name": "Node-Mongo-API-Atlas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ListsDb",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/list-db",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"list-db"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListbyType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/get-list/House",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"get-list",
+						"House"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListsAllByType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/list-types/Apartment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"list-types",
+						"Apartment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListsById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/list-id/1111112",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"list-id",
+						"1111112"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"_id\": \"1111114\",\n    \"name\": \"House test 4\",\n    \"summary\": \"Modern home with infinite views from the infinity pool\",\n    \"property_type\": \"House\",\n    \"bedrooms\": 5,\n    \"bathrooms\": 4.5,\n    \"beds\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/property",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"property"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"AAA32\",\n    \"summary\": \"Modern home New A\",\n    \"property_type\": \"House\",\n    \"bedrooms\": 5,\n    \"bathrooms\": 4.5,\n    \"beds\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/property/1111114",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"property",
+						"1111114"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/property/1111113",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"property",
+						"1111113"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

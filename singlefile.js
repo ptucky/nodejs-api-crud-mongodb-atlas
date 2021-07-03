@@ -1,13 +1,25 @@
+const express = require("express");
+
 const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://[USER]:[PASS]@cluster0.g9o3s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
 
+//const router = express.Router();
+const application = express();
+const bodyParser = require('body-parser');
 
-exports.findAllDb = async (req, res) => {
+application.use(bodyParser.urlencoded({ extend: true }));
+application.use(bodyParser.json()); // json for api
+
+application.get("/", (req, res) => {
+    res.send("index")
+});
+
+application.get('/list-db', async (req, res) => {
 
     try {
         await client.connect();
-        databasesList = await client.db().admin().listDatabases();
+        const databasesList = await client.db().admin().listDatabases();
 
         //let dbLists  = databasesList.databases.forEach(db => ` - ${db.name}`);
         res.send(databasesList.databases);
@@ -21,10 +33,9 @@ exports.findAllDb = async (req, res) => {
         // await client.close();
     }
 
-};
+});
 
-
-exports.findOneList = async (req, res) => {
+application.get('/get-list/:propertyType', async (req, res) => {
     //House, //Apartment, //Condominium
     //Infinite Views
     try {
@@ -47,34 +58,9 @@ exports.findOneList = async (req, res) => {
         // await client.close();
     }
 
-};
+});
 
-
-exports.findOneId = async (req, res) => {
-    //1003530
-    try {
-
-        await client.connect();
-
-        const maximumNumberOfResults = 5;
-        const result = await client.db("sample_airbnb").collection("listingsAndReviews")
-        .findOne({ _id: req.params.roomId });
-       
-        res.send(result);
-
-    } catch (e) {
-        res.status(500).send({
-             message: e.message || "Some error occurred while retrieving notes."
-        });
-    } finally {
-        // Close the connection to the MongoDB cluster
-        // await client.close();
-    }
-
-};
-
-
-exports.findAllType = async (req, res) => {
+application.get('/list-types/:propertyType', async (req, res) => {
     
     try {
 
@@ -102,10 +88,40 @@ exports.findAllType = async (req, res) => {
         // await client.close();
     }
 
-};
+});
+
+application.get('/list-id/:roomId',async (req, res) => {
+    
+    try {
+
+        await client.connect();
+
+        const maximumNumberOfResults = 5;
+        const cursor = client.db("sample_airbnb").collection("listingsAndReviews")
+        .find({
+            bedrooms: { $gte: 4 },
+            bathrooms: { $gte: 5 }
+        }
+        )
+        .sort({ last_review: -1 })
+        .limit(maximumNumberOfResults);
+
+        const results = await cursor.toArray();
+        res.send(results);
+
+    } catch (e) {
+        res.status(500).send({
+             message: e.message || "Some error occurred while retrieving notes."
+        });
+    } finally {
+        // Close the connection to the MongoDB cluster
+        // await client.close();
+    }
+
+});
 
 
-exports.create = async (req, res) => {
+application.post('/property',async (req, res, next) => {
 
     // Validate request
     if(!req.body.name) {
@@ -132,10 +148,10 @@ exports.create = async (req, res) => {
         // await client.close();
     }
 
-};
+});
 
 
-exports.update = async (req, res) => {
+application.put('/property/:propertyId', async (req, res) => {
 
     // Validate request
     if(!req.params.propertyId) {
@@ -165,10 +181,10 @@ exports.update = async (req, res) => {
         // await client.close();
     }
     
-};
+});
 
 
-exports.delete = async (req, res) => {
+application.delete('/property/:propertyId', async (req, res) => {
 
     // Validate request
     if(!req.params.propertyId) {
@@ -195,4 +211,9 @@ exports.delete = async (req, res) => {
         // await client.close();
     }
     
-};
+});
+
+
+application.listen("3000", () => {
+    console.log("Server started: http://localhost:3000/");
+});
